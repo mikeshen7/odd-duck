@@ -5,13 +5,18 @@
 let productNames = getProductList();
 let numProducts = productNames.length;
 let productList = [];
+
 for (let i = 0; i < numProducts; i++) {
-  productList[i] = new Products(productNames[i][0], productNames[i][1]);
+  if (productNames[i] === 'sweep'){
+    productList[i] = new Products(productNames[i], 'png');
+  } else {
+    productList[i] = new Products(productNames[i]);
+  }
 }
 
 // user adjustable settings
-let numDisplay = 4;
-let sessionVotes = 7;
+let numDisplay = 3;
+let sessionVotes = 25;
 
 // Initialize variables
 let sessionVoteCount = 0;
@@ -35,27 +40,7 @@ function getProductList() {
   // Create array with image names and file names
 
   // this is temporary until I figure out how to do it automatically
-  let tempArray = [
-    ['bag', 'bag.jpg'],
-    ['banana', 'bathroom.jpg'],
-    ['bathroom', 'bathroom.jpg'],
-    ['boots', 'boots.jpg'],
-    ['breakfast', 'breakfast.jpg'],
-    ['bubblegum', 'bubblegum.jpg'],
-    ['chair', 'chair.jpg'],
-    ['cthulhu', 'cthulhu.jpg'],
-    ['dogDuck', 'dog-duck.jpg'],
-    ['dragon', 'dragon.jpg'],
-    ['pen', 'pen.jpg'],
-    ['petSweep', 'pet-sweep.jpg'],
-    ['scissors', 'scissors.jpg'],
-    ['shark', 'shark.jpg'],
-    ['sweep', 'sweep.png'],
-    ['tauntaun', 'tauntaun.jpg'],
-    ['unicorn', 'unicorn.jpg'],
-    ['waterCan', 'water-can.jpg'],
-    ['wineGlass', 'wine-glass.jpg']
-  ];
+  let tempArray = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','water-can','wine-glass'];
 
   // got from https://www.folkstalk.com/tech/javascript-get-list-of-files-in-directory-with-code-examples/
   // THIS DOESN'T WORK.  CANNOT READ ARRAY INDEX
@@ -72,9 +57,9 @@ function getProductList() {
   return tempArray;
 }
 
-function Products(name, file) {
+function Products(name, imgExt = 'jpg') {
   this.name = name;
-  this.file = file;
+  this.file = 'img/' + name + '.' + imgExt;
   this.seen = 0;
   this.votes = 0;
   this.onDisplay = false;
@@ -94,16 +79,17 @@ Products.prototype.display = function (position) {
 
   // Add <img> element based on the position
   let imgElem = document.createElement('img');
-  let tempURL = 'img/' + this.file;
-  imgElem.src = tempURL;
+  imgElem.src = this.file;
   imgElem.id = position;
+  imgElem.alt = 'image of ' + this.name;
+  imgElem.title = this.name;
   productImagesDOM.appendChild(imgElem);
 
   // add event listener
-  imgElem.addEventListener('click', this.handleClick);
+  imgElem.addEventListener('click', handleClick);
 };
 
-Products.prototype.handleClick = function (event) {
+function handleClick(event) {
   // find product that was just clicked
   let id = productToDisplay[event.target.id];
 
@@ -116,17 +102,29 @@ Products.prototype.handleClick = function (event) {
 
   // remove event listener
   let imgElem = document.getElementById(event.target.id);
-  imgElem.removeEventListener('click', this.handleClick);
+  imgElem.removeEventListener('click', handleClick);
 
-  // select 3 new random products and display
-  randomProducts();
-
-  // if > xx votes, display results.
+  // if > xx votes, end voting session.
+  let pElem;
   if (sessionVoteCount >= sessionVotes) {
+    // display results
     displayResults();
     sessionVoteCount = 0;
+
+    // remove images
+    while (productImagesDOM.firstChild) {
+      productImagesDOM.removeChild(productImagesDOM.firstChild);
+    }
+
+    // display end of voting message
+    pElem = document.createElement('p');
+    pElem.textContent = 'Thanks for voting';
+    productImagesDOM.appendChild(pElem);
+
+  } else {
+    randomProducts();
   }
-};
+}
 
 function randomProducts() {
   let imgElem;
