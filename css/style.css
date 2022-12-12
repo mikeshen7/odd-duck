@@ -1,0 +1,87 @@
+header {
+  border: 1px solid black;
+  display: flex;
+}
+
+header h1 {
+  /* border: 1px solid black; */
+  width:100%;
+  display: flex;
+  align-items: center;
+}
+
+nav {
+  /* border: 1px solid black; */
+  border-left: 1px solid black;
+  width: 200px;
+  font-size:1vw;
+}
+
+main ul {
+  /* border: 1px solid black; */
+  padding:0px;
+  width:max-content;
+}
+
+#grid-container {
+  /* border: 1px solid black; */
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows:auto;
+  grid-template-areas:
+    'results picture picture picture'
+    'results description description description'
+}
+
+#results {
+  /* border: 1px solid black; */
+  border-right: 1px solid black;
+  padding: 20px;
+  grid-area:results;
+  width: 300px;
+}
+
+#results div {
+  /* border: 1px solid black; */
+  width:100%;
+  display:flex;
+  vertical-align: bottom;
+  margin-top:20px;
+}
+
+#products {
+  /* border: 1px solid black; */
+  border: 0px;
+}
+
+#productImages { 
+  /* border: 1px solid black; */
+  grid-area:picture;
+  display:flex;
+  height: 150px;
+  justify-content:space-evenly;
+}
+
+#productImages img {
+  /* border: 1px solid black; */
+  margin-right:5px;
+}
+
+#productDescription { 
+  /* border: 1px solid black; */
+  grid-area:description;
+
+}
+
+footer {
+  border: 1px solid black;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4vw;
+}
+
+h2 {
+  font-size: 3vw;
+}
