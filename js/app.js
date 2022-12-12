@@ -90,7 +90,7 @@ Products.prototype.display = function (position) {
 };
 
 function handleClick(event) {
-  // find product that was just clicked
+  // find product that was  clicked
   let id = productToDisplay[event.target.id];
 
   // add 1 to vote count, set display to off
