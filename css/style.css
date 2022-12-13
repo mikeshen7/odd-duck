@@ -78,6 +78,11 @@ nav {
   max-width: 100%;
 }
 
+#resultsChart{
+  /* border: 1px solid black; */
+  width:100%;
+}
+
 #productDescription { 
   /* border: 1px solid black; */
   grid-area:description;
