@@ -7,7 +7,7 @@ let numProducts = productNames.length;
 let productList = [];
 
 for (let i = 0; i < numProducts; i++) {
-  if (productNames[i] === 'sweep'){
+  if (productNames[i] === 'sweep') {
     productList[i] = new Products(productNames[i], 'png');
   } else {
     productList[i] = new Products(productNames[i]);
@@ -16,7 +16,7 @@ for (let i = 0; i < numProducts; i++) {
 
 // user adjustable settings
 let numDisplay = 3;
-let sessionVotes = 25;
+let sessionVotes = 5;
 
 // Initialize variables
 let sessionVoteCount = 0;
@@ -30,6 +30,7 @@ let productImagesDOM = document.getElementById('productImages');
 let voteButton = document.getElementById('viewVotes');
 let percentageButton = document.getElementById('viewPercentage');
 let seenButton = document.getElementById('viewSeen');
+let resultsChartDOM = document.getElementById('chart');
 
 // Object Literals ************************************************************
 
@@ -40,7 +41,7 @@ function getProductList() {
   // Create array with image names and file names
 
   // this is temporary until I figure out how to do it automatically
-  let tempArray = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','water-can','wine-glass'];
+  let tempArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'water-can', 'wine-glass'];
 
   // got from https://www.folkstalk.com/tech/javascript-get-list-of-files-in-directory-with-code-examples/
   // THIS DOESN'T WORK.  CANNOT READ ARRAY INDEX
@@ -192,6 +193,10 @@ function displayResults() {
   liElem = document.createElement('li');
   liElem.textContent = 'Total Votes: ' + totalVotes;
   ulElem.appendChild(liElem);
+
+  // Display chart
+  displayChart();
+  resultsChartDOM.style.display = 'block';
 }
 
 function handleResultsClick(event) {
@@ -206,12 +211,74 @@ function handleResultsClick(event) {
   displayResults();
 }
 
+function displayChart() {
+  // Remove chart - prevents multiple charts being overlaid on top of each other
+  while (resultsChartDOM.firstChild) {
+    resultsChartDOM.removeChild(resultsChartDOM.firstChild);
+  }
+
+  // create chart element
+  let chartElem = document.createElement('canvas');
+  chartElem.id = 'resultsChart';
+  resultsChartDOM.appendChild(chartElem);
+
+  // Create dataset for chart
+  let xValues = []; //array with names for x-axis
+  let yValues = []; // array with names for y-axis
+  let barColors = []; // array with colors for each bar
+
+  for (let i = 0; i < numProducts; i++) {
+    xValues[i] = productList[i].name;
+
+    if (resultType === 'percentage') {
+      yValues[i] = productList[i].percentage;
+    } else if (resultType === 'seen') {
+      yValues[i] = productList[i].seen;
+    } else {
+      yValues[i] = productList[i].votes;
+    }
+
+    // Create random colors for bar chart.  Got this from https://css-tricks.com/snippets/javascript/random-hex-color/
+    barColors[i] = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  }
+
+  // create chart data object
+  let chartObj = {
+    type: 'bar',
+
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues,
+      }]
+    },
+
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: 'Odd Duck Products Voting Results: ' + resultType
+        },
+        legend: {
+          display:false,
+
+        }
+      }
+    },
+
+  };
+
+  // Create chart
+  new Chart('resultsChart', chartObj); // eslint-disable-line
+}
+
 // Executable Code ************************************************************
 
 // choose initial random products
 randomProducts();
 
-// Results buttons
+// Results buttons, hide until ready to display
 voteButton.addEventListener('click', handleResultsClick);
 voteButton.style.display = 'none';
 
@@ -220,3 +287,6 @@ percentageButton.style.display = 'none';
 
 seenButton.addEventListener('click', handleResultsClick);
 seenButton.style.display = 'none';
+
+// Hide chart until ready to display
+resultsChartDOM.style.display = 'none';
