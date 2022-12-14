@@ -16,7 +16,7 @@ for (let i = 0; i < numProducts; i++) {
 
 // user adjustable settings
 let numDisplay = 3;
-let sessionVotes = 5;
+let sessionVotes = 25;
 
 // Initialize variables
 let sessionVoteCount = 0;
@@ -31,6 +31,8 @@ let voteButton = document.getElementById('viewVotes');
 let percentageButton = document.getElementById('viewPercentage');
 let seenButton = document.getElementById('viewSeen');
 let resultsChartDOM = document.getElementById('chart');
+let retryBtnDOM = document.getElementById('retryBtn');
+let clearBtnDOM = document.getElementById('clearBtn');
 
 // Object Literals ************************************************************
 
@@ -74,6 +76,9 @@ Products.prototype.display = function (position) {
   this.displayPosition = position;
   this.seen++;
   this.percentage = Math.round((this.votes / this.seen * 1000)) / 10;
+  if (Number(this.seen) === 0){
+    this.percentage = 0;
+  }
 
   // Delete old <img> element
   document.getElementById(position).remove();
@@ -96,10 +101,13 @@ function handleClick(event) {
 
   // add 1 to vote count, set display to off
   sessionVoteCount++;
-  totalVotes++;
+  totalVotes = totalVotes + 1;
   productList[id].votes++; // this works if it's productList[id], but doesn't work if it's 'this'
   productList[id].onDisplay = false;
   productList[id].percentage = Math.round((productList[id].votes / productList[id].seen * 1000)) / 10;
+  if (Number(productList[id].seen) === 0){
+    productList[id].percentage = 0;
+  }
 
   // remove event listener
   let imgElem = document.getElementById(event.target.id);
@@ -163,6 +171,8 @@ function displayResults() {
     voteButton.style.display = 'block';
     percentageButton.style.display = 'block';
     seenButton.style.display = 'block';
+    retryBtnDOM.style.display = 'block';
+    clearBtnDOM.style.display = 'block';
   }
 
   let ulElem = document.getElementById('resultsUL');
@@ -174,8 +184,15 @@ function displayResults() {
     ulElem.removeChild(ulElem.firstChild);
   }
 
+
+
   // set string output based on result type
   for (let i = 0; i < numProducts; i++) {
+    productList[i].percentage = Math.round((productList[i].votes / productList[i].seen * 1000)) / 10;
+    if (Number(productList[i].seen) === 0){
+      productList[i].percentage = 0;
+    }
+
     if (resultType === 'percentage') {
       tempString = productList[i].name + ': ' + productList[i].percentage + '%';
     } else if (resultType === 'seen') {
@@ -189,14 +206,17 @@ function displayResults() {
     ulElem.appendChild(liElem);
   }
 
-  // Display total votes
-  liElem = document.createElement('li');
-  liElem.textContent = 'Total Votes: ' + totalVotes;
-  ulElem.appendChild(liElem);
+  // Display total votes - not doing this anymore with the local storage
+  // liElem = document.createElement('li');
+  // liElem.textContent = 'Total Votes: ' + totalVotes;
+  // ulElem.appendChild(liElem);
 
   // Display chart
   displayChart();
   resultsChartDOM.style.display = 'block';
+
+  // Store data to local storage
+  storeData();
 }
 
 function handleResultsClick(event) {
@@ -255,6 +275,7 @@ function displayChart() {
     },
 
     options: {
+      maintainAspectRatio: false,
       plugins: {
         title: {
           display: true,
@@ -273,20 +294,61 @@ function displayChart() {
   new Chart('resultsChart', chartObj); // eslint-disable-line
 }
 
+function storeData() {
+  let temp = JSON.stringify(productList);
+  localStorage.setItem('productData', temp);
+}
+
+function readData() {
+  // On first run of website, if product data doesn't exist, create one
+  if (localStorage.getItem('productdata') === 'null'){
+    storeData();
+  }
+
+  let retrievedProductData = localStorage.getItem('productData');
+  let parsedProductData = JSON.parse(retrievedProductData);
+
+  for(let i=0; i<numProducts;i++){
+    productList[i].votes = Number(parsedProductData[i].votes);
+    productList[i].seen = Number(parsedProductData[i].seen);
+  }
+}
+
+function handleRetryClick(){
+  randomProducts();
+}
+
+function handleClearClick(){
+  for(let i=0; i<numProducts;i++){
+    productList[i].votes = 0;
+    productList[i].seen = 0;
+  }
+
+  storeData();
+
+  displayResults();
+
+}
+
+
 // Executable Code ************************************************************
+// Read data from local storage
+readData();
 
 // choose initial random products
 randomProducts();
 
-// Results buttons, hide until ready to display
-voteButton.addEventListener('click', handleResultsClick);
+// Hide buttons until ready to display
 voteButton.style.display = 'none';
-
-percentageButton.addEventListener('click', handleResultsClick);
 percentageButton.style.display = 'none';
-
-seenButton.addEventListener('click', handleResultsClick);
 seenButton.style.display = 'none';
-
-// Hide chart until ready to display
+retryBtnDOM.style.display = 'none';
+clearBtnDOM.style.display = 'none';
 resultsChartDOM.style.display = 'none';
+
+// Add event listeners to buttons
+voteButton.addEventListener('click', handleResultsClick);
+percentageButton.addEventListener('click', handleResultsClick);
+seenButton.addEventListener('click', handleResultsClick);
+retryBtnDOM.addEventListener('click', handleRetryClick);
+clearBtnDOM.addEventListener('click', handleClearClick);
