@@ -296,21 +296,18 @@ function displayChart() {
 
 function storeData() {
   let temp = JSON.stringify(productList);
-  localStorage.setItem("productData", temp);
+  localStorage.setItem('productData', temp);
 }
 
 function readData() {
   // On first run of website, if product data doesn't exist, create one
-  if (localStorage.getItem("productData") === null){
+  if (localStorage.getItem('productData') === null){
     storeData();
-    console.log('localStorage return null');
   }
 
-  let retrievedProductData = localStorage.getItem("productData");
-  console.log('retrieved data' + retrievedProductData);
+  let retrievedProductData = localStorage.getItem('productData');
 
   let parsedProductData = JSON.parse(retrievedProductData);
-  console.log('parsed data' + parsedProductData);
 
   for(let i=0; i<numProducts;i++){
     productList[i].votes = Number(parsedProductData[i].votes);
