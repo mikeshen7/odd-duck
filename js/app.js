@@ -296,16 +296,16 @@ function displayChart() {
 
 function storeData() {
   let temp = JSON.stringify(productList);
-  localStorage.setItem('productData', temp);
+  localStorage.setItem("productData", temp);
 }
 
 function readData() {
   // On first run of website, if product data doesn't exist, create one
-  if (localStorage.getItem('productdata') === 'null'){
+  if (localStorage.getItem("productdata") === 'null'){
     storeData();
   }
 
-  let retrievedProductData = localStorage.getItem('productData');
+  let retrievedProductData = localStorage.getItem("productData");
   let parsedProductData = JSON.parse(retrievedProductData);
 
   for(let i=0; i<numProducts;i++){
