@@ -301,7 +301,7 @@ function storeData() {
 
 function readData() {
   // On first run of website, if product data doesn't exist, create one
-  if (localStorage.getItem("productdata") === 'null'){
+  if (localStorage.getItem("productdata") === null){
     storeData();
     console.log('localStorage return null');
   }
