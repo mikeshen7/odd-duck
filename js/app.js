@@ -303,10 +303,14 @@ function readData() {
   // On first run of website, if product data doesn't exist, create one
   if (localStorage.getItem("productdata") === 'null'){
     storeData();
+    console.log('localStorage return null');
   }
 
   let retrievedProductData = localStorage.getItem("productData");
+  console.log('retrieved data' + retrievedProductData);
+
   let parsedProductData = JSON.parse(retrievedProductData);
+  console.log('parsed data' + parsedProductData);
 
   for(let i=0; i<numProducts;i++){
     productList[i].votes = Number(parsedProductData[i].votes);
