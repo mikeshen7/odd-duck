@@ -45,18 +45,6 @@ function getProductList() {
   // this is temporary until I figure out how to do it automatically
   let tempArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'water-can', 'wine-glass'];
 
-  // got from https://www.folkstalk.com/tech/javascript-get-list-of-files-in-directory-with-code-examples/
-  // THIS DOESN'T WORK.  CANNOT READ ARRAY INDEX
-  // let ifr = document.createElement('iframe');
-  // ifr.src = './img/';
-  // ifr.style.display = 'none';
-  // ifr.onload = () => {
-  //   ifr.contentDocument.querySelectorAll('.name').forEach((name) => {
-  //     productList.push(name.innerHTML);
-  //   });
-  // };
-  // document.body.appendChild(ifr);
-
   return tempArray;
 }
 
