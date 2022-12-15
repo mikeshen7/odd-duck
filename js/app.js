@@ -116,19 +116,22 @@ function handleClick(event) {
   // if > xx votes, end voting session.
   let pElem;
   if (sessionVoteCount >= sessionVotes) {
-    // display results
-    displayResults();
-    sessionVoteCount = 0;
-
     // remove images
     while (productImagesDOM.firstChild) {
       productImagesDOM.removeChild(productImagesDOM.firstChild);
     }
 
+    displayResults();
+
     // display end of voting message
     pElem = document.createElement('p');
     pElem.textContent = 'Thanks for voting';
     productImagesDOM.appendChild(pElem);
+
+    // display results
+
+    sessionVoteCount = 0;
+    displayResults();
 
   } else {
     randomProducts();
