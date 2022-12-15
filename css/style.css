@@ -1,16 +1,18 @@
 body {
   /* border: 1px solid black; */
-  width:99%;
+  width: 99%;
+  background-image: url("/img/timothy-dykes-LhqLdDPcSV8-unsplash.jpg");
 }
 
 header {
   border: 1px solid black;
   display: flex;
+  background-color: white;
 }
 
 header h1 {
   /* border: 1px solid black; */
-  width:100%;
+  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -19,15 +21,16 @@ nav {
   /* border: 1px solid black; */
   border-left: 1px solid black;
   width: 200px;
-  font-size:1vw;
+  font-size: 1vw;
 }
 
 #main-grid {
   /* border: 1px solid black; */
-  width:100%;
-  display:grid;
+  background-color: white;
+  width: 100%;
+  display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows:auto;
+  grid-template-rows: auto;
   grid-template-areas:
     'results picture picture picture'
     'results description description description'
@@ -37,59 +40,64 @@ nav {
   /* border: 1px solid black; */
   border-right: 1px solid black;
   padding: 20px;
-  grid-area:results;
+  grid-area: results;
 }
 
 #resultsUL {
   /* border: 1px solid black; */
-  padding:0px;
-  width:max-content;
+  padding: 0px;
+  width: max-content;
 }
 
 #results div {
   /* border: 5px solid red; */
-  width:100%;
-  display:flex;
+  width: 100%;
+  display: flex;
   vertical-align: bottom;
-  margin-top:20px;
+  margin-top: 20px;
   justify-content: space-evenly;
 }
 
 #products {
   /* border: 1px solid black; */
-  grid-area:picture;
-  width:90%;
+  grid-area: picture;
+  width: 90%;
   max-height: 100%;
   max-width: 100%;
 }
 
-#productImages { 
+#productImages {
   /* border: 1px solid black; */
-  display:flex;
+  margin-top: 20px;
+  display: flex;
   height: 150px;
-  justify-content:space-evenly;
+  justify-content: space-evenly;
   max-height: 100%;
   max-width: 100%;
 }
 
 #productImages img {
-  /* border: 1px solid black; */
-  margin-right:5px;
+  border: 1px solid black;
+  border-radius: 5%;
+  margin-right: 5px;
   max-height: 100%;
   max-width: 100%;
 }
 
-#resultsChart{
+#resultsChart {
   /* border: 1px solid black; */
-  max-width:100%;
+  max-width: 100%;
   height: 300px;
 
 }
 
-#productDescription { 
+#productDescription {
   /* border: 1px solid black; */
-  grid-area:description;
-
+  grid-area: description;
+  margin-top: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
 }
 
 footer {
