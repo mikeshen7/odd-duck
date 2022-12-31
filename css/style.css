@@ -101,8 +101,14 @@ nav {
 }
 
 footer {
+  background-color: gray;
   border: 1px solid black;
   text-align: center;
+  position:fixed;
+  width:100%;
+  height:70px;
+  left:0px;
+  bottom:0px;
 }
 
 h1 {
